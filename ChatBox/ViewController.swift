@@ -43,6 +43,9 @@ class ViewController: UIViewController {
         let view = ChatInfoView()
         view.frame.size.width = self.view.frame.width - 100
         view.frame.size.height = navigationController?.navigationBar.frame.height ?? 10
+        view.title = "Nishant"
+        view.subtitle = "a few hours ago"
+        view.image = UIImage(systemName: "person.fill")
         return view
     }()
     
@@ -82,20 +85,20 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillChangeFrame(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowHide(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
  
     // Interaction
-    @objc func handleKeyboardWillChangeFrame(notification: Notification) {
+    @objc private func handleKeyboardShowHide(notification: Notification) {
         guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             print("unable to change frame of ChatInputView")
             return
         }
         let defaultOriginY: CGFloat = view.frame.height - view.safeAreaInsets.bottom - chatInputView.frame.height
-        if chatInputView.frame.origin.y != defaultOriginY { chatInputView.frame.origin.y = defaultOriginY }
-        else { chatInputView.frame.origin.y = frame.origin.y - chatInputView.frame.height }
+        chatInputView.frame.origin.y = frame.origin.y > defaultOriginY ? defaultOriginY : frame.origin.y - chatInputView.frame.height
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
@@ -106,6 +109,7 @@ extension ViewController: ChatInputViewDelegate, ChatInputViewDelegateLayout {
     // Delegate
     func chatInputView(_ view: ChatInputView, didSelectIconFor actionType: ChatInputViewActionType) {
         print(#function, actionType.rawValue)
+        view.endEditing(true)
     }
     
     // Delegate Layout

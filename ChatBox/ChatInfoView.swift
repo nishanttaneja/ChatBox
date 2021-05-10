@@ -9,7 +9,7 @@ import UIKit
 
 class ChatInfoView: UIView {
     // Constants
-    private let padding: CGFloat = 6
+    private let padding: CGFloat = 8
     
     // Views
     private let imageView: UIImageView = {
@@ -30,7 +30,8 @@ class ChatInfoView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Subtitle"
-        label.font = .systemFont(ofSize: 12)
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 14)
         return label
     }()
     
@@ -38,6 +39,14 @@ class ChatInfoView: UIView {
     var image: UIImage? {
         get { imageView.image }
         set { imageView.image = newValue }
+    }
+    var title: String? {
+        get { titleLabel.text }
+        set { titleLabel.text = newValue }
+    }
+    var subtitle: String? {
+        get { subtitleLabel.text }
+        set { subtitleLabel.text = newValue }
     }
     
     // Constraints

@@ -14,10 +14,9 @@ import UIKit
         var image: UIImage?
         switch self {
         case .addAttachment: image = UIImage(systemName: "plus")
-        case .sendMessage: image = UIImage(systemName: "arrow.right.circle.fill")
+        case .sendMessage: image = UIImage(systemName: "paperplane.fill")?.applyingSymbolConfiguration(.init(scale: .large))
         case .startAudioRecording: image = UIImage(systemName: "mic")
         }
-        image = image?.withTintColor(.green, renderingMode: .alwaysOriginal).applyingSymbolConfiguration(.init(pointSize: 16))
         return image
     }
 }
