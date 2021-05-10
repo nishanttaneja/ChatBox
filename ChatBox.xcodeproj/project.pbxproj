@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B479A05D2649237A00CDCD2D /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B479A05C2649237A00CDCD2D /* ChatInputView.swift */; };
 		B4AD7D542648F55100ABDA47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AD7D532648F55100ABDA47 /* AppDelegate.swift */; };
 		B4AD7D562648F55100ABDA47 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AD7D552648F55100ABDA47 /* SceneDelegate.swift */; };
 		B4AD7D582648F55100ABDA47 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AD7D572648F55100ABDA47 /* ViewController.swift */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B479A05C2649237A00CDCD2D /* ChatInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputView.swift; sourceTree = "<group>"; };
 		B4AD7D502648F55100ABDA47 /* ChatBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4AD7D532648F55100ABDA47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4AD7D552648F55100ABDA47 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 				B4AD7D532648F55100ABDA47 /* AppDelegate.swift */,
 				B4AD7D552648F55100ABDA47 /* SceneDelegate.swift */,
 				B4AD7D572648F55100ABDA47 /* ViewController.swift */,
+				B479A05C2649237A00CDCD2D /* ChatInputView.swift */,
 				B4AD7D5C2648F55200ABDA47 /* Assets.xcassets */,
 				B4AD7D5E2648F55200ABDA47 /* LaunchScreen.storyboard */,
 				B4AD7D612648F55200ABDA47 /* Info.plist */,
@@ -134,6 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4AD7D582648F55100ABDA47 /* ViewController.swift in Sources */,
+				B479A05D2649237A00CDCD2D /* ChatInputView.swift in Sources */,
 				B4AD7D542648F55100ABDA47 /* AppDelegate.swift in Sources */,
 				B4AD7D562648F55100ABDA47 /* SceneDelegate.swift in Sources */,
 			);
