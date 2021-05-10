@@ -7,6 +7,13 @@
 
 import UIKit
 
+class FirstController: UIViewController {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.pushViewController(ViewController(), animated: true)
+    }
+}
+
 class ViewController: UIViewController {
     // Constants
     private let heightForChatInputView: CGFloat = 48
@@ -28,6 +35,15 @@ class ViewController: UIViewController {
         return view
     }()
     
+    // Constraints
+    private var constraintsToActivate: [NSLayoutConstraint] {[
+        // Background Image View
+        backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top),
+        backgroundImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: view.safeAreaInsets.left),
+        backgroundImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -view.safeAreaInsets.right),
+        backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.safeAreaInsets.bottom),
+    ]}
+    
     // Properties
     private var backgroundImage: UIImage? {
         get { backgroundImageView.image }
@@ -39,25 +55,20 @@ class ViewController: UIViewController {
         super.loadView()
         view.backgroundColor = .systemGray5
         view.addSubview(backgroundImageView)
+        view.addSubview(chatInputView)
+    }
+    
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        NSLayoutConstraint.activate(constraintsToActivate)
+        chatInputView.frame.origin.y = view.frame.height - view.safeAreaInsets.bottom - chatInputView.frame.height
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        view.addSubview(chatInputView)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillChangeFrame(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
-    
-    override func updateViewConstraints() {
-        super.updateViewConstraints()
-        NSLayoutConstraint.activate([
-            // Background Image View
-            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top),
-            backgroundImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: view.safeAreaInsets.left),
-            backgroundImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -view.safeAreaInsets.right),
-            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.safeAreaInsets.bottom),
-        ])
-    }
-    
+ 
     // Interaction
     @objc func handleKeyboardWillChangeFrame(notification: Notification) {
         guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
