@@ -8,6 +8,11 @@
 import UIKit
 
 class FirstController: UIViewController {
+    override func loadView() {
+        super.loadView()
+        title = "Chats"
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.pushViewController(ViewController(), animated: true)
@@ -20,9 +25,9 @@ class ViewController: UIViewController {
     
     // Views
     private let backgroundImageView: UIImageView = {
-        let imageView = UIImageView()
+        let image = UIImage(named: "background")
+        let imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .blue // ImageView's BackgroundColor
         return imageView
     }()
     private lazy var chatInputView: ChatInputView = {
@@ -32,6 +37,12 @@ class ViewController: UIViewController {
         view.backgroundColor = self.view.backgroundColor
         view.delegateLayout = self
         view.delegate = self
+        return view
+    }()
+    private lazy var chatInfoView: ChatInfoView = {
+        let view = ChatInfoView()
+        view.frame.size.width = self.view.frame.width - 100
+        view.frame.size.height = navigationController?.navigationBar.frame.height ?? 10
         return view
     }()
     
@@ -62,6 +73,11 @@ class ViewController: UIViewController {
         super.viewSafeAreaInsetsDidChange()
         NSLayoutConstraint.activate(constraintsToActivate)
         chatInputView.frame.origin.y = view.frame.height - view.safeAreaInsets.bottom - chatInputView.frame.height
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.titleView = chatInfoView
     }
     
     override func viewDidAppear(_ animated: Bool) {
