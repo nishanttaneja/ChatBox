@@ -48,6 +48,20 @@ class ViewController: UIViewController {
         view.image = UIImage(systemName: "person.fill")
         return view
     }()
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.keyboardDismissMode = .interactive
+        return tableView
+    }()
+    
+    // Properties
+    private var backgroundImage: UIImage? {
+        get { backgroundImageView.image }
+        set { backgroundImageView.image = newValue }
+    }
     
     // Constraints
     private var constraintsToActivate: [NSLayoutConstraint] {[
@@ -56,13 +70,12 @@ class ViewController: UIViewController {
         backgroundImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: view.safeAreaInsets.left),
         backgroundImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -view.safeAreaInsets.right),
         backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.safeAreaInsets.bottom),
+        // TableView
+        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.safeAreaInsets.top),
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: view.safeAreaInsets.left),
+        tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -view.safeAreaInsets.right),
+        tableView.bottomAnchor.constraint(equalTo: chatInputView.topAnchor)
     ]}
-    
-    // Properties
-    private var backgroundImage: UIImage? {
-        get { backgroundImageView.image }
-        set { backgroundImageView.image = newValue }
-    }
     
     // LifeCycle
     override func loadView() {
@@ -70,6 +83,7 @@ class ViewController: UIViewController {
         view.backgroundColor = .systemGray5
         view.addSubview(backgroundImageView)
         view.addSubview(chatInputView)
+        view.addSubview(tableView)
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -81,16 +95,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.titleView = chatInfoView
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowHide(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShowHide(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShowHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
  
     // Interaction
-    @objc private func handleKeyboardShowHide(notification: Notification) {
+    @objc private func handleKeyboardWillShowHide(notification: Notification) {
         guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             print("unable to change frame of ChatInputView")
             return
@@ -104,7 +119,7 @@ class ViewController: UIViewController {
     }
 }
 
-// MARK:- ChatInputView
+//MARK:- ChatInputView
 extension ViewController: ChatInputViewDelegate, ChatInputViewDelegateLayout {
     // Delegate
     func chatInputView(_ view: ChatInputView, didSelectIconFor actionType: ChatInputViewActionType) {
@@ -115,5 +130,21 @@ extension ViewController: ChatInputViewDelegate, ChatInputViewDelegateLayout {
     // Delegate Layout
     func spacingForItems(in chatInputView: ChatInputView) -> CGFloat {
         8
+    }
+}
+
+//MARK:- TableView
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
+    // TableView DataSource
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        20
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = String(indexPath.row)
+        cell.detailTextLabel?.text = String(indexPath.row)
+        cell.imageView?.image = UIImage(systemName: "person")?.applyingSymbolConfiguration(.init(pointSize: 27))
+        return cell
     }
 }
